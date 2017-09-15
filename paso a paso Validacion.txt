@@ -1,0 +1,63 @@
+Template para todos los tps que diga "quien soy?"
+Registrarme
+
+Timmer en login - pierdo el modelo, no interactuo con varieables
+componente card
+Timmer en asgilidad aritmetica - no pierdo el modelo, interactuo con varieables
+
+
+juego + listado muestra tus resultados del momento
+listado muestra los resultados de todos
+
+--------------------------------------------------------------------------------------
+
+Form de registro
+
+
+Parcial: componentes, input, output (aunque sea un boton), estilo, hijos de ruteo, json,
+manejo de modelo, servicios, etc. 
+login, abm, apirest
+ver graficos (estadisticas), promesas, observables
+Promesa: async. Da la posibilidad de extender la promesa. Metodos: then y catch
+
+
+-----------------------------------------------------------------------------------------
+Validacion dentro del on clic:
+1. app modeule: importar el appModule, reactiveFormsModule. Agregarlo en los imports de abajo
+2. En el ts del registro (donde quiero validar), importar validators,formbuilder,form control y formgroup from @angular/forms (solo funciona con <form> Eso es lo que valida!)
+3. en el html del registro, <form class='modal etc' [formGroup]="LoginValidation"
+4. como parametro en el constructor de ts registro comoopnent: private builder : fromBuilder
+5. fuera del costructor: formRegisters : FormGroup = this builder.group({});
+6. Dentro del control qeu quiero controlar, agrego un [formControl]="miControl" dentro del html
+7. En el ts, con ese nombre hago una instancia del formControl. Le puedo pasar un valor y un array de validaciones. 
+
+-----------------------------------------------------------------------------------------
+http://restcountries.eu/rest/v2/all
+CORS
+
+1. importo en app.module: import { HttpModule } from '@angular/http'; Lo importe.
+2. objetivo: un servicio que maneje el http, llama a otros servicios. Creo ng g service Servicios/miHttp
+3. importo en el servicio: 
+import { Http, Response } from '@angular/http'; import 'rxjs/add/operator/tuPromise';
+4. Importo el http en appmodules, y como provider 
+5. DEntro del servicio:  constructor(public http : Http)//objeto de tipo HTTP 
+  { }
+
+  public DameUnaPromesa(url : string)
+  {
+    return this.http.get(url).toPromise().then(this.ExtraerDatos).catch(this.ManejadorDeError);
+ }
+6. Creo otra funcion: public ManejadorDeError(error: Response | any)
+  {
+    return error;
+  }
+7. Creo otra funcion: 
+
+  public ExtraerDatos(respuesta : Response)
+  {
+    return respuesta.json() || {}; //o devuelve un json o devuelve vacío
+  }
+8. en el servicio juego importo import { MiHttpService } from './mi-http.service';
+9. Los servicios se instancian en el contructor!  constructor(public miHttp : MiHttpService) { }
+10. en el metodo listar, agrego this.miHttp.DameUnaPromesa("http://restcountries.eu/rest/v2/all").then(datos => {console.log(datos);}).catch(error => {console.log(error);}); //el operador flecha define una funcionalidad que anonima que asigna a una variable el retorno. Algo asi como un delegado. La respuesta del then es datos, se lo paso por parametro al console log
+11. 
